@@ -1,50 +1,83 @@
-# React + TypeScript + Vite
+# Financial Card Component Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Project Overview
 
-Currently, two official plugins are available:
+This project implements a financial card component as part of a Front-End Developer Assignment. The application demonstrates proficiency in modern web development technologies, focusing on creating a performant, user-friendly, and maintainable financial data visualization component.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Project Objectives
 
-## Expanding the ESLint configuration
+The primary goals of this project were to:
+- Create a responsive financial card component
+- Handle data fetching from a mock API
+- Implement premium user access controls
+- Ensure a smooth user experience
+- Demonstrate code quality and testing practices
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+## Technology Stack
 
-- Configure the top-level `parserOptions` property like this:
+  - React
+  - TypeScript
+  - Vite
+  - Tailwind CSS
+  - React Query
+  - Vitest
+  - React Testing Library
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## Prerequisites
+
+- Node.js (v18.0.0 or later)
+- npm (v9.0.0 or later)
+
+## Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/shcherbyakdev/sa-assesment.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+### 2. Install Dependencies
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm install
 ```
+
+### 3. Configure Environment Variables
+
+Create a `.env.local` file in the project root:
+
+```
+API_BASE_URL=https://seekingalpha.free.beeceptor.com
+```
+
+### 4. Launch Development Server
+
+```bash
+npm run dev
+```
+
+The application will be available at `http://localhost:5173`
+
+## Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start development server |
+| `npm run build` | Create production build |
+| `npm run lint` | Run code linter |
+| `npm run test` | Execute test suite |
+| `npm run preview` | Preview production build |
+
+## Mock API Endpoints
+
+The project uses the following mock API endpoints:
+
+| Endpoint | Description |
+|----------|-------------|
+| `/user` | User information |
+| `/ratings-summary` | Ratings summary |
+| `/factor-grades/now` | Current factor grades |
+| `/factor-grades/3m` | 3-month factor grades |
+| `/factor-grades/6m` | 6-month factor grades |
+| `/quant-ranking` | Quant ranking information |
+
