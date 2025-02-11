@@ -17,12 +17,12 @@ vi.mock("./components/QantRankingCard", () => ({
 }));
 
 describe("App", () => {
-  it("renders RatingsSummaryCard and FactorGradesCard for non-premium user", () => {
+  it("hide RatingsSummaryCard and FactorGradesCard for non-premium user", () => {
     renderWithProviders(<App />, { premium: false });
 
-    expect(screen.getByText("Ratings Summary")).toBeInTheDocument();
-    expect(screen.getByText("Factor Grades Card")).toBeInTheDocument();
-    expect(screen.queryByText("Qant Ranking Card")).not.toBeInTheDocument();
+    expect(screen.getByText("Qant Ranking Card")).toBeInTheDocument();
+    expect(screen.queryByText("Ratings Summary Card")).not.toBeInTheDocument();
+    expect(screen.queryByText("Factor Grades Card")).not.toBeInTheDocument();
   });
 
   it("renders all cards including QantRankingCard for premium user", () => {

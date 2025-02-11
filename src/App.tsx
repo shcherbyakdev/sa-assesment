@@ -8,9 +8,13 @@ function App() {
 
   return (
     <>
-      <RatingsSummaryCard />
-      <FactorGradesCard />
-      {user?.premium && <QantRankingCard />}
+      {user?.premium && (
+        <>
+          <RatingsSummaryCard />
+          <FactorGradesCard />
+        </>
+      )}
+      <QantRankingCard />
     </>
   );
 }
