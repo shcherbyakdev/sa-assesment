@@ -1,4 +1,4 @@
-import { useUser } from "../api/queries";
+import { useUser } from "../api/hooks";
 import { ErrorPage } from "../components/common/ErrorPage";
 import { LoadingSpinner } from "../components/common/LoadingSpinner";
 import { UserContext } from "../context/UserContext";

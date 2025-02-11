@@ -3,26 +3,25 @@ import { Skeleton } from "./Skeleton";
 
 type Alignment = "left" | "center" | "right";
 
-// Ensure cell values are ReactNode compatible
-type CellValue = string | undefined;
-export type DataRecord = Record<string, CellValue>;
-
-export interface Column<T extends DataRecord = DataRecord> {
+// Remove the BaseRecord type constraint since we want to allow any object type
+export interface Column<T> {
   header?: string;
-  key: keyof T | string;
+  key: keyof T;
   align?: Alignment;
   className?: string;
-  renderCell?: (value: CellValue, row: T) => ReactNode;
+  renderCell?: (value: T[keyof T], row: T) => ReactNode;
+  width?: string;
 }
 
-interface TableProps<T extends DataRecord = DataRecord> {
+interface TableProps<T> {
   columns: Column<T>[];
   data?: T[];
   isLoading?: boolean;
-  underlineRows?: boolean;
   hideHeaders?: boolean;
   className?: string;
   loadingRowCount?: number;
+  firstColumnWidth?: string;
+  "data-testid"?: string;
 }
 
 const getAlignmentClass = (align: Alignment = "left"): string => {
@@ -36,33 +35,37 @@ const getAlignmentClass = (align: Alignment = "left"): string => {
   }
 };
 
-export function Table<T extends DataRecord = DataRecord>({
+export function Table<T>({
   columns = [],
   data = [],
   isLoading = false,
-  underlineRows = false,
   hideHeaders = false,
   className = "",
   loadingRowCount = 3,
+  firstColumnWidth = "150px",
+  "data-testid": dataTestId,
 }: TableProps<T>) {
-  const baseCellStyles = "py-3 px-4 text-sm";
+  const baseCellStyles = "py-2 px-3 text-sm whitespace-nowrap";
   const defaultTextStyle = "text-gray-700";
 
   if (isLoading) {
     return (
-      <div className={`w-full overflow-x-auto ${className}`}>
-        <table className="w-full min-w-full table-auto">
+      <div className={`w-full overflow-auto ${className}`}>
+        <table className="w-full table-fixed" data-testid={dataTestId}>
           {!hideHeaders && (
             <thead>
-              <tr className="border-b border-gray-200">
+              <tr>
                 {columns.map((column, index) => (
                   <th
                     key={String(column.key) || index}
-                    className={`py-3 px-4 text-sm font-medium text-gray-500 ${getAlignmentClass(
+                    className={`py-2 px-3 text-sm font-medium text-gray-300 ${getAlignmentClass(
                       column.align
-                    )}`}
+                    )} truncate`}
+                    style={{
+                      width: index === 0 ? firstColumnWidth : column.width,
+                    }}
                   >
-                    {column.header}
+                    <Skeleton className="h-4 w-full" />
                   </th>
                 ))}
               </tr>
@@ -70,14 +73,16 @@ export function Table<T extends DataRecord = DataRecord>({
           )}
           <tbody>
             {Array.from({ length: loadingRowCount }).map((_, rowIndex) => (
-              <tr
-                key={rowIndex}
-                className={`${underlineRows ? "border-b border-gray-200" : ""}`}
-              >
+              <tr key={rowIndex}>
                 {columns.map((column, colIndex) => (
                   <td
                     key={`${rowIndex}-${String(column.key) || colIndex}`}
-                    className="py-3 px-4"
+                    className={`py-2 px-3 ${getAlignmentClass(
+                      column.align
+                    )} truncate`}
+                    style={{
+                      width: colIndex === 0 ? firstColumnWidth : column.width,
+                    }}
                   >
                     <Skeleton className="h-4 w-full" />
                   </td>
@@ -91,19 +96,21 @@ export function Table<T extends DataRecord = DataRecord>({
   }
 
   return (
-    <div className={`w-full overflow-x-auto ${className}`}>
-      <table className="w-full min-w-full table-auto">
+    <div className={`w-full overflow-auto ${className}`}>
+      <table className="w-full table-fixed" data-testid={dataTestId}>
         {!hideHeaders && (
           <thead>
-            <tr className="border-b border-gray-200">
+            <tr>
               {columns.map((column, index) => (
                 <th
                   key={String(column.key) || index}
                   className={`
-                    py-3 px-4 text-sm font-medium text-gray-500
-                    ${getAlignmentClass(column.align)}
-                    ${column.className || ""}
+                    py-2 px-3 text-sm font-medium text-gray-400 whitespace-nowrap
+                    ${getAlignmentClass(column.align)} truncate
                   `}
+                  style={{
+                    width: index === 0 ? firstColumnWidth : column.width,
+                  }}
                 >
                   {column.header}
                 </th>
@@ -115,10 +122,10 @@ export function Table<T extends DataRecord = DataRecord>({
           {data.map((row, rowIndex) => (
             <tr key={rowIndex}>
               {columns.map((column, cellIndex) => {
-                const value = row[column.key as keyof T] as CellValue;
+                const value = row[column.key];
                 const content = column.renderCell
                   ? column.renderCell(value, row)
-                  : value;
+                  : (value as ReactNode);
 
                 return (
                   <td
@@ -126,8 +133,11 @@ export function Table<T extends DataRecord = DataRecord>({
                     className={`
                       ${baseCellStyles}
                       ${getAlignmentClass(column.align)}
-                      ${column.className || defaultTextStyle}
+                      ${column.className || defaultTextStyle} truncate
                     `}
+                    style={{
+                      width: cellIndex === 0 ? firstColumnWidth : column.width,
+                    }}
                   >
                     {content}
                   </td>

@@ -1,5 +1,6 @@
 interface SkeletonProps {
   className?: string;
+  width?: string;
 }
 
 export const Skeleton: React.FC<SkeletonProps> = ({ className = "" }) => (

@@ -1,5 +1,5 @@
-import { useQuantRanking } from "../api/queries";
-import { Card } from "./common/Card";
+import { useQuantRanking } from "../../api/hooks";
+import { Card } from "../common/Card";
 import { QantRankingRow } from "./QantRankingRow";
 
 export const QantRankingCard = () => {
